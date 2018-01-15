@@ -7,6 +7,7 @@
 
 import os
 import PIL
+import hashlib
 from PIL import Image
 import simplejson
 import traceback
@@ -24,7 +25,7 @@ app.config['UPLOAD_FOLDER'] = 'data/'
 app.config['THUMBNAIL_FOLDER'] = 'data/thumbnail/'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set(['txt', 'gif', 'png', 'jpg', 'jpeg', 'bmp', 'rar', 'zip', '7zip', 'doc', 'docx'])
+ALLOWED_EXTENSIONS = set(['pdf'])
 IGNORED_FILES = set(['.gitignore'])
 
 bootstrap = Bootstrap(app)
@@ -76,12 +77,14 @@ def upload():
             mime_type = files.content_type
 
             if not allowed_file(files.filename):
+                file_key = ""
                 result = uploadfile(name=filename, type=mime_type, size=0, not_allowed_msg="File type not allowed")
 
             else:
                 # save file to disk
                 uploaded_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 files.save(uploaded_file_path)
+                file_key = hashlib.md5(files.read()).hexdigest() 
 
                 # create thumbnail after saving
                 if mime_type.startswith('image'):
@@ -91,8 +94,8 @@ def upload():
                 size = os.path.getsize(uploaded_file_path)
 
                 # return json for js call back
-                result = uploadfile(name=filename, type=mime_type, size=size)
-            
+                result = uploadfile(name=filename, type=mime_type, size=size, hash=file_key)
+                print simplejson.dumps({"files": [result.get_file()]})
             return simplejson.dumps({"files": [result.get_file()]})
 
     if request.method == 'GET':

@@ -41,7 +41,7 @@ $(function () {
             disableImageResize: /Android(?!.*Chrome)|Opera/
                 .test(window.navigator.userAgent),
             maxFileSize: 5000000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+            acceptFileTypes: /(\.|\/)(pdf)$/i
         });
         // Upload server status check for browsers with CORS support:
         if ($.support.cors) {
@@ -56,20 +56,20 @@ $(function () {
             });
         }
     } else {
-        // Load existing files:
-        $('#fileupload').addClass('fileupload-processing');
-        $.ajax({
-            // Uncomment the following to send cross-domain cookies:
-            //xhrFields: {withCredentials: true},
-            url: $('#fileupload').fileupload('option', 'url'),
-            dataType: 'json',
-            context: $('#fileupload')[0]
-        }).always(function () {
-            $(this).removeClass('fileupload-processing');
-        }).done(function (result) {
-            $(this).fileupload('option', 'done')
-                .call(this, $.Event('done'), {result: result});
-        });
+        // // Load existing files:
+        // $('#fileupload').addClass('fileupload-processing');
+        // $.ajax({
+        //     // Uncomment the following to send cross-domain cookies:
+        //     //xhrFields: {withCredentials: true},
+        //     url: $('#fileupload').fileupload('option', 'url'),
+        //     dataType: 'json',
+        //     context: $('#fileupload')[0]
+        // }).always(function () {
+        //     $(this).removeClass('fileupload-processing');
+        // }).done(function (result) {
+        //     $(this).fileupload('option', 'done')
+        //         .call(this, $.Event('done'), {result: result});
+        // });
     }
 
 });

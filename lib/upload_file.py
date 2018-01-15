@@ -1,7 +1,7 @@
 import os
 
 class uploadfile():
-    def __init__(self, name, type=None, size=None, not_allowed_msg=''):
+    def __init__(self, name, type=None, size=None, not_allowed_msg='', hash=''):
         self.name = name
         self.type = type
         self.size = size
@@ -10,6 +10,7 @@ class uploadfile():
         self.thumbnail_url = "thumbnail/%s" % name
         self.delete_url = "delete/%s" % name
         self.delete_type = "DELETE"
+        self.hash = hash
 
 
     def is_image(self):
@@ -31,7 +32,8 @@ class uploadfile():
                         "url": self.url, 
                         "thumbnailUrl": self.thumbnail_url,
                         "deleteUrl": self.delete_url, 
-                        "deleteType": self.delete_type,}
+                        "deleteType": self.delete_type,
+                        "hash": self.hash}
             
             # POST an normal file
             elif self.not_allowed_msg == '':
@@ -40,7 +42,8 @@ class uploadfile():
                         "size": self.size, 
                         "url": self.url, 
                         "deleteUrl": self.delete_url, 
-                        "deleteType": self.delete_type,}
+                        "deleteType": self.delete_type,
+                        "hash": self.hash}
 
             # File type is not allowed
             else:
@@ -56,7 +59,8 @@ class uploadfile():
                     "url": self.url, 
                     "thumbnailUrl": self.thumbnail_url,
                     "deleteUrl": self.delete_url, 
-                    "deleteType": self.delete_type,}
+                    "deleteType": self.delete_type,
+                    "hash": self.hash}
         
         # GET normal file from disk
         else:
@@ -64,4 +68,5 @@ class uploadfile():
                     "size": self.size, 
                     "url": self.url, 
                     "deleteUrl": self.delete_url, 
-                    "deleteType": self.delete_type,}
+                    "deleteType": self.delete_type,
+                    "hash": self.hash}
